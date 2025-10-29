@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme{
+  --color-gulf-stream-50: #f4f9f8;
+  --color-gulf-stream-100: #d9eeec;
+  --color-gulf-stream-200: #b3dcd8;
+  --color-gulf-stream-300: #7cbfbb;
+  --color-gulf-stream-400: #5ba6a3;
+  --color-gulf-stream-500: #418b8a;
+  --color-gulf-stream-600: #326f6f;
+  --color-gulf-stream-700: #2b595a;
+  --color-gulf-stream-800: #264949;
+  --color-gulf-stream-900: #233d3e;
+  --color-gulf-stream-950: #102123;
+  --color-primary: var(--color-gulf-stream-500);
+
+
+}
+
+.btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 99999px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+  transition: background-size 0.3s ease, transform 0.2s ease;
+}
+.btn-primary {
+  background: linear-gradient(0deg, var(--color-gulf-stream-400), var(--color-gulf-stream-900));
+  background-size: 100% 100%;
+  background-position: center;
+  color: #ffffff;
+  border: 1px solid var(--color-gulf-stream-600);
+  box-shadow: inset 0 -4px 6px rgba(0, 0, 0, 0.5);
+
+  &:hover {
+    background-size: 100% 300%;
+    transform: translateY(-2px);
+  }
+}
+
+.btn-secondary {
+  /* background-color: #e2e8f0; */
+  border: var(--color-neutral-400) 1px solid;
+  box-shadow: inset 0 -5px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(0deg, var(--color-neutral-50), var(--color-neutral-100));
+  background-size: 100% 100%;
+  background-position: center;
+
+  &:hover {
+    background-size: 100% 300%;
+    transform: translateY(-2px);
+  }
+}

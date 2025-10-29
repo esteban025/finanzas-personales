@@ -1,22 +1,28 @@
+---
+// import "global.css";
+import "../styles/global.css";
+
+import BackgroundPage from "@/components/BackgroundPage.astro";
+
+const { title, description } = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<!-- <meta name="generator" content={Astro.generator} /> -->
+		<title>{title}</title>
+		<meta name="description" content={description} />
 	</head>
-	<body>
-		<slot />
+	<body class="">
+		<div class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none">
+			<BackgroundPage />
+		</div>
+		<div class="w-full max-w-7xl mx-auto px-4">
+			<slot />
+		</div>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
