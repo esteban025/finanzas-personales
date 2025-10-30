@@ -1,0 +1,74 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import GoogleIcon from "@/assets/google.svg";
+import { actions } from "astro:actions";
+---
+
+<Layout title="Sign In">
+  <section class="flex flex-col min-h-screen justify-center px-4 py-10">
+    <h1 class="text-3xl font-bold text-center mb-10">Iniciar Sesión</h1>
+
+    <article
+      class="bg-white w-full max-w-xl mx-auto flex flex-col py-10 rounded-xl shadow-lg"
+    >
+      <form
+        class="max-w-md mx-auto mt-8 flex flex-col gap-4 items-center"
+        id="sign-in-form"
+        method="post"
+        action={actions.register}
+      >
+        <input
+          name="email"
+          type="email"
+          placeholder="Correo Electrónico"
+          class="border-2 border-neutral-300 px-4 py-2 rounded-full w-full placeholder:text-gray-300 focus:outline-none focus:border-blue-500 transition"
+          required
+        />
+
+        <button type="submit" class="btn btn-primary mt-4">
+          Iniciar Seción
+        </button>
+      </form>
+      <div class="max-w-md mx-auto mt-4 flex flex-col items-center">
+        <p class="text-sm text-gray-600 mb-2">O inicia con</p>
+        <button id="google-btn" class="btn btn-secondary">
+          <GoogleIcon class="w-4 h-4 inline-block mr-2" />
+          Iniciar con Google
+        </button>
+      </div>
+    </article>
+  </section>
+</Layout>
+
+<script>
+  import { supabase } from "@/services/supabase";
+  import { actions } from "astro:actions";
+
+  const form = document.getElementById("sign-in-form") as HTMLFormElement;
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const email = formData.get("email") as string;
+
+    const { data, error } = await actions.register({ email });
+    if (error) {
+      // mostrar error simple
+      alert(error.message || "Error al intentar iniciar sesión.");
+      console.error(error);
+      return;
+    }
+
+    alert(data?.message || "Revisa tu correo para iniciar sesión.");
+  });
+
+  // Botón Google - se ejecuta en el cliente y redirige al flujo OAuth de Supabase
+  const googleBtn = document.getElementById("google-btn");
+  googleBtn?.addEventListener("click", async () => {
+    // redirigir al completar el OAuth hacia /dashboard
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin + "/dashboard" },
+    });
+  });
+</script>

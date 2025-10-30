@@ -1,0 +1,41 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { supabase } from "@/services/supabase";
+
+const {
+  data: { session },
+} = await supabase.auth.getSession();
+
+let categories = [];
+
+if (session) {
+  const { data, error } = await supabase
+    .from("categories")
+    .select("*")
+    .eq("user_id", session.user.id)
+    .order("created_at", { ascending: true });
+
+  if (!error) categories = data;
+}
+---
+
+<Layout title="Mis Categorías">
+  <main class="max-w-4xl mx-auto mt-12">
+    <h1 class="text-2xl font-bold mb-6">Categorías</h1>
+
+    <ul class="space-y-3">
+      {
+        categories.length > 0 ? (
+          categories.map((cat) => (
+            <li class="p-3 bg-white rounded shadow">
+              <p class="font-semibold">{cat.name}</p>
+              <p class="text-gray-500 text-sm">{cat.description}</p>
+            </li>
+          ))
+        ) : (
+          <p class="text-gray-500">No hay categorías aún.</p>
+        )
+      }
+    </ul>
+  </main>
+</Layout>

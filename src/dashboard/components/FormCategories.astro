@@ -1,0 +1,72 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { supabase } from "@/services/supabase";
+import { actions } from "astro:actions";
+
+// obtenemos sesión y categorías
+const {
+  data: { session },
+} = await supabase.auth.getSession();
+
+let categories = [];
+
+if (session) {
+  const { data } = await supabase
+    .from("categories")
+    .select("*")
+    .eq("user_id", session.user.id)
+    .order("created_at", { ascending: true });
+
+  if (data) categories = data;
+}
+---
+
+<Layout title="Mis Categorías">
+  <main class="max-w-4xl mx-auto mt-12">
+    <h1 class="text-2xl font-bold mb-6">Categorías</h1>
+
+    <!-- Form con Astro Actions -->
+    <form
+      method="post"
+      action={actions.createCategory}
+      class="bg-white p-4 rounded shadow mb-8"
+    >
+      <label class="block mb-2 font-semibold">Nombre:</label>
+      <input
+        type="text"
+        name="name"
+        required
+        class="border rounded p-2 w-full mb-4"
+      />
+
+      <label class="block mb-2 font-semibold">Descripción:</label>
+      <textarea
+        name="description"
+        placeholder="Descripción breve"
+        class="border rounded p-2 w-full mb-4"></textarea>
+
+      <button
+        type="submit"
+        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+      >
+        Crear categoría
+      </button>
+    </form>
+
+    <!-- Listado -->
+    <ul class="space-y-3">
+      {
+        categories.length > 0 ? (
+          categories.map((cat) => (
+            <li class="p-3 bg-white rounded shadow">
+              <p class="font-semibold">{cat.name}</p>
+              <p class="text-gray-500 text-sm">{cat.description}</p>
+            </li>
+          ))
+        ) : (
+          <p class="text-gray-500">No hay categorías aún.</p>
+        )
+      }
+    </ul>
+  </main>
+</Layout>

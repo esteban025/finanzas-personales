@@ -1,0 +1,85 @@
+---
+import Logo from "@/assets/logo.svg";
+import LogOutIcon from "@/assets/logout.svg";
+---
+
+<header
+  class="flex items-center justify-between p-4 rounded-lg mt-8 max-w-7xl mx-auto flex-wrap gap-4"
+>
+  <div class="flex items-center gap-4">
+    <a href="/" class="inline-flex items-center gap-2">
+      <Logo class="w-12 h-auto aspect-square" />
+    </a>
+
+    <div class="welcome">
+      <h3 class="font-bold text-3xl md:text-4xl font-cormorant">
+        Bienvenido de nuevo, <span class="user-name capitalize"
+          >Cargando...</span
+        >!
+      </h3>
+      <p class="text-gray-700 text-base">
+        Es el mejor momento para administrar tus finanzas.
+      </p>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-2 bg-white rounded-full p-1.5 shadow-lg">
+    <img
+      id="user-avatar"
+      src=""
+      alt="User Avatar"
+      class="w-10 h-10 rounded-full"
+    />
+    <div class="data-user">
+      <div class="text-gray-700 font-medium user-name capitalize">
+        Cargando...
+      </div>
+      <div
+        id="user-email"
+        class="text-gray-700 text-xs w-full max-w-[150px] overflow-hidden truncate"
+      >
+        Cargando...
+      </div>
+    </div>
+    <button
+      id="signout"
+      class="btn-secondary p-2 rounded-full flex justify-center items-center cursor-pointer transition"
+      title="Cerrar sesión"
+    >
+      <LogOutIcon class="w-full" />
+    </button>
+  </div>
+</header>
+
+<script>
+  import { getUserInfo } from "@/lib/getInfoUser";
+  import { supabase } from "@/services/supabase";
+
+  const userInfo = await getUserInfo();
+
+  const $$userName = document.querySelectorAll(".user-name");
+  const userEmail = document.getElementById("user-email") as HTMLDivElement;
+  const userAvatar = document.getElementById("user-avatar") as HTMLImageElement;
+  const signout = document.getElementById("signout") as HTMLButtonElement;
+
+  if (!userInfo) {
+    location.href = "/signIn";
+  } else {
+    // Mostrar nombre o email
+    const { email, avatar_url, full_name } = userInfo;
+    const firstName = full_name.split(" ")[0];
+    $$userName.forEach((el) => (el.textContent = firstName));
+
+    userEmail.textContent = email || "Sin correo electrónico";
+    userAvatar.src = avatar_url || "/default-avatar.png";
+  }
+
+  signout?.addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    location.href = "/";
+  });
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (!session) location.href = "/signIn";
+  });
+</script>

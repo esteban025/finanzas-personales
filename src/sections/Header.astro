@@ -3,15 +3,49 @@ import Logo from "@/assets/logo.svg";
 ---
 
 <header
-  class="absolute top-0 left-0 right-0 p-4 flex justify-between items-center w-full max-w-5xl mx-auto"
+  class="absolute top-0 left-0 right-0 p-4 flex justify-between items-center w-full max-w-5xl mx-auto mt-4"
 >
   <a href="/" class="inline-flex items-center gap-2">
     <Logo class="w-12 h-auto aspect-square" />
-    <span class="text-xl font-semibold">Fns</span>
+    <span class="text-xl font-cormorant uppercase" style="font-weight:600;"
+      >OmniFi</span
+    >
   </a>
   <div class="nav"></div>
-  <div class="actions flex gap-2 items-center">
-    <button class="btn btn-secondary">Sign Up</button>
-    <button class="btn btn-primary">Sign In</button>
+
+  <div class="session">
+    <!-- html create user session info -->
   </div>
 </header>
+
+<script>
+  import { getUserInfo } from "@/lib/getInfoUser";
+
+  const $divSession = document.querySelector(".session") as HTMLDivElement;
+  const userInfo = await getUserInfo();
+
+  if (userInfo) {
+    const { email, avatar_url, full_name } = userInfo;
+    $divSession.innerHTML = `<div class="flex items-center gap-2 bg-white rounded-full p-1.5 pr-4 shadow-lg cursor-default">
+    <img
+      id="user-avatar"
+      src=${avatar_url}
+      alt="User Avatar"
+      class="w-10 h-10 rounded-full border border-gray-300"
+    />
+    <div class="data-user">
+      <div class="text-gray-700 font-medium user-name capitalize">
+        ${full_name}
+      </div>
+      <div
+        id="user-email"
+        class="text-gray-500 text-xs w-full max-w-[150px] overflow-hidden truncate"
+      >
+        ${email}
+      </div>
+    </div>
+  </div>`;
+  } else {
+    $divSession.innerHTML = ``;
+  }
+</script>

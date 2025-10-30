@@ -1,0 +1,105 @@
+---
+import GoogleIcon from "@/assets/google.svg";
+import LogoIcon from "@/assets/logo.svg";
+import CrossIcon from "@/assets/cross.svg";
+import { actions } from "astro:actions";
+---
+
+<dialog
+  id="dialog-signIn"
+  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 backdrop:bg-black/70 backdrop:backdrop-blur-sm w-8/12 max-w-xl rounded-xl p-4"
+  closedby="any"
+>
+  <form
+    id="sign-in-form"
+    method="post"
+    action={actions.register}
+    class="w-full rounded-2xl relative"
+  >
+    <div class="modal-box">
+      <section class="flex flex-col justify-center mb-6">
+        <header class="flex items-center justify-center gap-4 my-6 mb-12">
+          <LogoIcon class="w-12 h-auto" />
+          <h2 class="font-cormorant font-bold text-xl uppercase">Omnifi</h2>
+        </header>
+        <article class="flex flex-col w-full max-w-xs mx-auto">
+          <p class="text-sm text-gray-600 mb-2 text-center">
+            Inicia sesión para continuar
+          </p>
+          <div class="flex flex-col gap-4 items-center w-full">
+            <input
+              name="email"
+              type="email"
+              placeholder="Correo Electrónico"
+              class="border-2 border-neutral-300 px-4 py-2 rounded-full w-full placeholder:text-gray-300 focus:outline-none focus:border-blue-500 transition"
+              required
+            />
+
+            <button type="submit" class="btn btn-primary block w-full">
+              Iniciar Sesión
+            </button>
+          </div>
+
+          <div class="flex flex-col items-center mt-6 gap-3">
+            <p
+              class="text-sm text-gray-600 other-option relative w-full text-center"
+            >
+              O inicia con
+            </p>
+            <button
+              type="button"
+              id="google-btn"
+              class="btn btn-secondary flex items-center gap-2 w-full justify-center"
+            >
+              <GoogleIcon class="w-4 h-4" />
+              Iniciar con Google
+            </button>
+          </div>
+        </article>
+      </section>
+    </div>
+    <button
+      class="absolute top-0 right-0 rounded-full border border-gray-400 p-1.5 cursor-pointer group hover:border-gray-600 transition"
+      id="close-modal"
+    >
+      <CrossIcon
+        class="w-5 h-5 stroke-gray-400 group-hover:stroke-gray-600 transition"
+      />
+    </button>
+  </form>
+</dialog>
+
+<style>
+  .other-option {
+    margin-bottom: 0.5rem;
+  }
+
+  .other-option::before,
+  .other-option::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 32%;
+    height: 2px;
+    border-radius: 9999px;
+    background-color: var(--color-gray-300); /* gray-300 */
+    /* background-color: red; */
+    z-index: -1;
+  }
+  .other-option::before {
+    left: 0;
+  }
+  .other-option::after {
+    right: 0;
+  }
+</style>
+
+<script>
+  const $btnClose = document.getElementById("close-modal") as HTMLButtonElement;
+  const $dialog = document.getElementById("dialog-signIn") as HTMLDialogElement;
+
+  $btnClose.addEventListener("click", (e) => {
+    e.preventDefault();
+    $dialog.close();
+  });
+</script>

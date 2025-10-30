@@ -3,6 +3,7 @@
 import "../styles/global.css";
 
 import BackgroundPage from "@/components/BackgroundPage.astro";
+import ModalSign from "@/components/ModalSign.astro";
 
 const { title, description } = Astro.props;
 ---
@@ -17,10 +18,11 @@ const { title, description } = Astro.props;
 		<title>{title}</title>
 		<meta name="description" content={description} />
 	</head>
-	<body class="">
+	<body class="font-inter font-light">
 		<div class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none">
 			<BackgroundPage />
 		</div>
+		<ModalSign />
 		<div class="w-full max-w-7xl mx-auto px-4">
 			<slot />
 		</div>
