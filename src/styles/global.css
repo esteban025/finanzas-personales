@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import '@fontsource-variable/cormorant';
 
 @theme{
   --color-gulf-stream-50: #f4f9f8;
@@ -14,15 +16,17 @@
   --color-gulf-stream-950: #102123;
   --color-primary: var(--color-gulf-stream-500);
 
+  --font-inter: 'Inter Variable', sans-serif;
+  --font-cormorant: 'Cormorant Variable', serif;
 
 }
 
 .btn {
-  padding: 0.5rem 1.2rem;
+  padding: 0.85rem 1.5rem;
   border-radius: 99999px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-weight: 600;
+  font-weight: 300;
   transition: background-size 0.3s ease, transform 0.2s ease;
 }
 .btn-primary {
